@@ -3,7 +3,7 @@ Requirements:
 2.) Level progression - DONE
 3.) Scores - DONE
 4.) Game over screen - DONE
-5.) Silhoutte - DONE
+5.) Silhouette - DONE
 
 The contents of the colors.h are taken file from https://github.com/odyssjii/tetris/blob/master/src/colors.h
 
@@ -34,7 +34,7 @@ Current level
 Score
 Lines filled
 
-Generated tetrino pieces using a structure and rgba array. Refer tetrinos.h (put link)
+Generated tetromino pieces using a structure and rgba array. Refer tetrominos.h (put link)
 
 Game engine -
 A switch statement which switches between four phases of the game with each phase having its own update function that implements the corresponding algorithm. The four phases:

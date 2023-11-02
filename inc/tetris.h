@@ -3,7 +3,7 @@
 
 #include <cstdio>
 #include <cstring>
-#include "./tetrinos.h"
+#include "./tetromino.h"
 #include "./colors.h"
 using namespace std;
 
@@ -68,10 +68,10 @@ enum TextAlign{
 
 struct PieceState
 {
-    uint8_t tetrinoIndex; // Index indication which tetrino
-    int32_t offsetRow;    // Row of the tetrino
-    int32_t offsetCol;    // Column of the tetrino
-    int32_t rotation;     // Rotation of the tetrino
+    uint8_t tetrominoIndex; // Index indication which tetromino
+    int32_t offsetRow;    // Row of the tetromino
+    int32_t offsetCol;    // Column of the tetromino
+    int32_t rotation;     // Rotation of the tetromino
 };
 
 struct GameState
@@ -89,7 +89,7 @@ struct GameState
     int32_t pendingLineCount;
     int32_t score;
 
-    float nextDropTime; // Next drop time of the tetrino piece
+    float nextDropTime; // Next drop time of the tetromino piece
     float time;         // Current time
     float highlightEndTime;
 };
@@ -110,7 +110,7 @@ struct InputState
 };
 
 // Function Prototypes
-uint8_t tetrino_get(const Tetrino *tetrino, int32_t row, int32_t col, int32_t rotation);
+uint8_t tetromino_get(const Tetromino *tetromino, int32_t row, int32_t col, int32_t rotation);
 
 uint8_t matrix_get(const uint8_t *values, int32_t width, int32_t row, int32_t col);
 void matrix_set(uint8_t *values, int32_t width, int32_t row, int32_t col, uint8_t value);

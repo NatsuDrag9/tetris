@@ -102,7 +102,7 @@ void draw_string(SDL_Renderer *renderer, TTF_Font *font, const char *text, int32
  * @param colorValue - index value for the various Color arrays
  * @param xOffset - x offset of the cell
  * @param yOffset - y offset of the cell
- * @param outline - if true, draws a silhouette of the tetrino piece on the board
+ * @param outline - if true, draws a silhouette of the tetromino piece on the board
  */
 void draw_cell(SDL_Renderer *renderer, int32_t row, int32_t col, uint8_t colorValue, int32_t xOffset, int32_t yOffset, bool outline = false)
 {
@@ -130,22 +130,22 @@ void draw_cell(SDL_Renderer *renderer, int32_t row, int32_t col, uint8_t colorVa
 }
 
 /**
- * @brief - Draws the tetrino piece on the SDL window
+ * @brief - Draws the tetromino piece on the SDL window
  *
  * @param renderer - a pointer to SDL_Renderer* for renderering the piece
  * @param piece - piece to be rendered
  * @param xOffset - x offset of the piece when placed on the SDL window
  * @param yOffset - y offset of the piece when placed on the SDL window
- * @param outline - if true, draws a silhouette of the tetrino piece on the board
+ * @param outline - if true, draws a silhouette of the tetromino piece on the board
  */
 void draw_piece(SDL_Renderer *renderer, const PieceState *piece, int32_t xOffset, int32_t yOffset, bool outline = false)
 {
-    const Tetrino *tetrino = TETRINOS + piece->tetrinoIndex;
-    for (int32_t row = 0; row < tetrino->side; row++)
+    const Tetromino *tetromino = TETROMINOS + piece->tetrominoIndex;
+    for (int32_t row = 0; row < tetromino->side; row++)
     {
-        for (int32_t col = 0; col < tetrino->side; col++)
+        for (int32_t col = 0; col < tetromino->side; col++)
         {
-            uint8_t value = tetrino_get(tetrino, row, col, piece->rotation);
+            uint8_t value = tetromino_get(tetromino, row, col, piece->rotation);
             if (value)
             {
                 draw_cell(renderer, row + piece->offsetRow, col + piece->offsetCol, value, xOffset, yOffset, outline);
@@ -277,7 +277,7 @@ int main(void)
 
     spawn_piece(&game);
 
-    game.piece.tetrinoIndex = 2;
+    game.piece.tetrominoIndex = 2;
 
     bool quit = false;
     while (!quit)

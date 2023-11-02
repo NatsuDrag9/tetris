@@ -11,42 +11,42 @@ inline int32_t get_lines_for_next_level(int32_t startLevel, int32_t currentLevel
 inline uint8_t check_row_empty(const uint8_t *values, int32_t width, int32_t row);
 
 /**
- * @brief Gets the data from the tetrino considering rotation
+ * @brief Gets the data from the tetromino considering rotation
  *
- * @param tetrino - received tetrino to get data from
+ * @param tetromino - received tetromino to get data from
  * @param row - row
  * @param col - column
  * @return uint8_t - data value
  */
-uint8_t tetrino_get(const Tetrino *tetrino, int32_t row, int32_t col, int32_t rotation)
+uint8_t tetromino_get(const Tetromino *tetromino, int32_t row, int32_t col, int32_t rotation)
 {
-    int32_t side = tetrino->side;
+    int32_t side = tetromino->side;
     switch (rotation)
     {
     case 0:
         // No rotation
-        return tetrino->data[row * side + col];
+        return tetromino->data[row * side + col];
     case 1:
         /*
             Original matrix rotated by 90 degrees clockwise
             Original matrix row = (side - col - 1) in rotated matrix
             Original matrix col = row in rotated matrix
         */
-        return tetrino->data[(side - col - 1) * side + row];
+        return tetromino->data[(side - col - 1) * side + row];
     case 2:
         /*
             Original matrix rotated by 180 degrees clockwise
             Original matrix row = (side - row - 1) in rotated matrix
             Original matrix col = (side - col - 1) in rotated matrix
         */
-        return tetrino->data[(side - row - 1) * side + (side - col - 1)];
+        return tetromino->data[(side - row - 1) * side + (side - col - 1)];
     case 3:
         /*
             Original matrix rotated by 270 degrees clockwise
             Original matrix row = (col) in rotated matrix
             Original matrix col = (side - row - 1) in rotated matrix
         */
-        return tetrino->data[col * side + (side - row - 1)];
+        return tetromino->data[col * side + (side - row - 1)];
     default:
         return 0;
     }
@@ -98,17 +98,17 @@ void matrix_set(uint8_t *values, int32_t width, int32_t row, int32_t col, uint8_
  */
 bool check_piece_valid(PieceState *piece, const uint8_t *board, int32_t width, int32_t height)
 {
-    const Tetrino *tetrino = TETRINOS + piece->tetrinoIndex;
-    assert(tetrino);
+    const Tetromino *tetromino = TETROMINOS + piece->tetrominoIndex;
+    assert(tetromino);
 
-    // Loop through all the cells of the tetrino and check
+    // Loop through all the cells of the tetromino and check
     // whether the non-empty (non-zero) cells collide or
     // are out-of-bounds.
-    for (int32_t row = 0; row < tetrino->side; row++)
+    for (int32_t row = 0; row < tetromino->side; row++)
     {
-        for (int32_t col = 0; col < tetrino->side; col++)
+        for (int32_t col = 0; col < tetromino->side; col++)
         {
-            uint8_t value = tetrino_get(tetrino, row, col, piece->rotation);
+            uint8_t value = tetromino_get(tetromino, row, col, piece->rotation);
             if (value > 0)
             {
 
@@ -146,12 +146,12 @@ bool check_piece_valid(PieceState *piece, const uint8_t *board, int32_t width, i
  */
 void merge_piece(GameState *game)
 {
-    const Tetrino *tetrino = TETRINOS + game->piece.tetrinoIndex;
-    for (int32_t row = 0; row < tetrino->side; row++)
+    const Tetromino *tetromino = TETROMINOS + game->piece.tetrominoIndex;
+    for (int32_t row = 0; row < tetromino->side; row++)
     {
-        for (int32_t col = 0; col < tetrino->side; col++)
+        for (int32_t col = 0; col < tetromino->side; col++)
         {
-            uint8_t value = tetrino_get(tetrino, row, col, game->piece.rotation);
+            uint8_t value = tetromino_get(tetromino, row, col, game->piece.rotation);
             if (value)
             {
                 int32_t boardRow = game->piece.offsetRow + row;
@@ -169,7 +169,7 @@ inline int32_t generate_random_int(int32_t min, int32_t max)
 }
 
 /**
- * @brief Computes and returns the time for next tetrino piece to drop based on the current level
+ * @brief Computes and returns the time for next tetromino piece to drop based on the current level
  * Information about the game level is taken from Nintendo Tetris's wiki page
  *
  * @param gameLevel - current level of the game
@@ -185,20 +185,20 @@ inline float get_time_to_next_drop(int32_t gameLevel)
 }
 
 /**
- * @brief Spawns a new tetrino peice generated randomly
+ * @brief Spawns a new tetromino peice generated randomly
  *
  * @param game - pointer to GameState holding the current state of the game
  */
 void spawn_piece(GameState *game)
 {
     game->piece = {};
-    game->piece.tetrinoIndex = static_cast<uint8_t>(generate_random_int(0, ARRAY_COUNT(TETRINOS)));
+    game->piece.tetrominoIndex = static_cast<uint8_t>(generate_random_int(0, ARRAY_COUNT(TETROMINOS)));
     game->piece.offsetCol = WIDTH / 2;
     game->nextDropTime = game->time + get_time_to_next_drop(game->level);
 }
 
 /**
- * @brief - The tetrino piece is moved down. If the piece collides with the board, the piece is moved back up by one step and is fixed there by copying the contents of the piece's contents. Finally, a new tetrino piece is spawned and the function ends by returning true/false.
+ * @brief - The tetromino piece is moved down. If the piece collides with the board, the piece is moved back up by one step and is fixed there by copying the contents of the piece's contents. Finally, a new tetromino piece is spawned and the function ends by returning true/false.
  *
  * @param game - pointer to GameState holding the current state of the game
  * @return true - next drop occurs
@@ -218,7 +218,7 @@ bool soft_drop(GameState *game)
         // Merge the piece with the board
         merge_piece(game);
 
-        // Spawn a new tetrino piece
+        // Spawn a new tetromino piece
         spawn_piece(game);
         return false;
     }
@@ -494,7 +494,7 @@ void update_game_play(GameState *game, const InputState *input)
         game->highlightEndTime = game->time + 0.5; // highlight end time is 500 ms
     }
 
-    // Game over when tetrinos are in the two hidden rows at the top of the board
+    // Game over when tetrominos are in the two hidden rows at the top of the board
     int32_t gameOverRow = 0;
     if (!check_row_empty(game->board, WIDTH, gameOverRow))
     {
