@@ -1,0 +1,56 @@
+Requirements:
+1.) Starting level selection - DONE
+2.) Level progression - DONE
+3.) Scores - DONE
+4.) Game over screen - DONE
+5.) Silhoutte - DONE
+
+The contents of the colors.h are taken file from https://github.com/odyssjii/tetris/blob/master/src/colors.h
+
+The chicken pie text font for printing is downloaded from https://www.dafont.com/novem.font
+
+This project was inspired by and is a replica of Omid Ghavami's (https://github.com/odyssjii/tetris/tree/master/src) video on tetris game - https://www.youtube.com/watch?v=kh3rkt6nZ2c&ab_channel=InvertedMinds
+-----------------------------------------------------------------------------------------------------
+Design Notes:
+
+SDL screen window width = 420 pixels
+SDL screen window height = 700 pixels
+Chosen grid size = 30 pixels
+Width of game board = 420 / 30 = 14
+Height of game board = 700 / 30 = 23.33 but chose 22
+Visible height = 20
+
+To spawn a piece and check for game over, two rows from the height were left out. So, the visible height is 20 while the total height is 22
+
+Choice of Programming Style -
+I chose functional programming as it was simple and direct for this game.
+
+Graphics library -
+Simple DirectMedia Layer (SDL2)
+For installation instructions, visit https://wiki.libsdl.org/SDL2/Installation
+
+Information displayed on game screen -
+Current level
+Score
+Lines filled
+
+Generated tetrino pieces using a structure and rgba array. Refer tetrinos.h (put link)
+
+Game engine -
+A switch statement which switches between four phases of the game with each phase having its own update function that implements the corresponding algorithm. The four phases:
+(i) GAME_PHASE_START
+(ii) GAME_PHASE_PLAY
+(iii) GAME_PHASE_LINE
+(iv) GAME_PHASE_GAMEOVER
+
+Information about the game level is taken from Nintendo Tetris's wiki page
+
+Information about the scoring system is taken from Nintendo Tetris's wiki page
+
+Information about switching to next level is taken from Nintendo Tetris's wiki page
+
+-----------------------------------------------------------------------------------------------------
+Issues:
+1.) I was stuck for more than an hour with sdl2 linker error. The issue was resolved thanks to the solution by zeroc8 in https://stackoverflow.com/questions/18449697/sdl2-undefined-references-to-functions 
+
+2.) Similarly for TTL visit https://stackoverflow.com/questions/36434663/sdl-ttf-undefined-reference-to-ttf-init

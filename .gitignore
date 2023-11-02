@@ -1,0 +1,5 @@
+# Ignoring .zip files
+./chicken_pie.zip
+
+# Ignoring the build folder and its contents
+build/**
